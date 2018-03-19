@@ -45,8 +45,7 @@ while run:
     if player == target: #if they are the same position (...) will happen
         win.fill((yellow)) #placeholder, can add some relevant function later, for now the screen will turn yellow
     pygame.display.update()
-    
-pygame.draw.rect
+
 pygame.quit()
 
     
