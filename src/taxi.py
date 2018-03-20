@@ -1,5 +1,7 @@
 import pygame
 
+from menu import Menu
+
 # WINDOW SIZE
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
@@ -28,33 +30,38 @@ velocity = 5 #velocity
 z = 450 #x chord for target
 q = 450 #y chord for target
 
-#main loop
-run = True
-while run:
-    pygame.time.delay(100) #100 milliseconds
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: #if you hit the red X to close the porgram, it will stop the loop
-            run = False
-    
-    keys = pygame.key.get_pressed()
-    #border detection
-    if keys[pygame.K_LEFT] and x > velocity:
-        x -= velocity
-    if keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
-        x += velocity
-    if keys[pygame.K_UP] and y > velocity:
-        y -= velocity
-    if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
-        y += velocity
+# Create Menu
+menu = Menu()
 
-    game_window.fill((0, 0, 0))
-    player = pygame.draw.rect(game_window, (RED), (x, y, width, height))
-    player #drawing our player proto
-    target = pygame.draw.rect(game_window, (YELLOW), (z, q, width, height))
-    target #drawing our target proto, the place we want to bring our player to
-    if player == target: #if they are the same position (...) will happen
-        game_window.fill((YELLOW)) #placeholder, can add some relevant function later, for now the screen will turn yellow
-    pygame.display.update()
+# Main loop
+While True:
+    menu.check_button_clicked()
 
-pygame.quit() 
+    if menu.game_active:
+        pygame.time.delay(100) #100 milliseconds
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: #if you hit the red X to close the porgram, it will stop the loop
+                run = False
+
+        keys = pygame.key.get_pressed()
+        #border detection
+        if keys[pygame.K_LEFT] and x > velocity:
+            x -= velocity
+        if keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
+            x += velocity
+        if keys[pygame.K_UP] and y > velocity:
+            y -= velocity
+        if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
+            y += velocity
+
+        game_window.fill((0, 0, 0))
+        player = pygame.draw.rect(game_window, (RED), (x, y, width, height))
+        player #drawing our player proto
+        target = pygame.draw.rect(game_window, (YELLOW), (z, q, width, height))
+        target #drawing our target proto, the place we want to bring our player to
+        if player == target: #if they are the same position (...) will happen
+            game_window.fill((YELLOW)) #placeholder, can add some relevant function later, for now the screen will turn yellow
+        pygame.display.update()
+
+pygame.quit()
