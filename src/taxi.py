@@ -1,6 +1,7 @@
 import pygame
 
 from menu import Menu
+from game_functions import check_events
 
 # WINDOW SIZE
 WINDOW_WIDTH = 800
@@ -31,12 +32,11 @@ z = 450 #x chord for target
 q = 450 #y chord for target
 
 # Create Menu
-menu = Menu()
+menu = Menu(game_window)
 
 # Main loop
-While True:
-    menu.check_button_clicked()
-
+while True:
+    check_events(menu)
     if menu.game_active:
         pygame.time.delay(100) #100 milliseconds
 
@@ -62,6 +62,6 @@ While True:
         target #drawing our target proto, the place we want to bring our player to
         if player == target: #if they are the same position (...) will happen
             game_window.fill((YELLOW)) #placeholder, can add some relevant function later, for now the screen will turn yellow
-        pygame.display.update()
+    pygame.display.update()
 
 pygame.quit()
