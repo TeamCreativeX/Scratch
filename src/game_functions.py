@@ -3,6 +3,7 @@ import pygame
 
 def check_events(menu):
     ''' Respond to kepresses and mouse events '''
+
     # Watch for keyboard and mouse events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

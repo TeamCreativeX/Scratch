@@ -28,8 +28,13 @@ class Menu:
         for i in range(self.num_buttons):
             message = self.button_messages[i]
             button = Button(screen, x_cord, y_cord, button_height, message)
+            self.buttons.append(button)
             y_cord += button_height * 2
 
     def check_button_clicked(self, mouse_x, mouse_y):
         # Check if a button was clicked
-        pass
+        for button in self.buttons:
+            button_clicked = button.rect.collidepoint(mouse_x, mouse_y)
+
+            if button_clicked and button.message == 'Play':
+                self.game_active = True
