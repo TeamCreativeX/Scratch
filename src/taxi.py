@@ -40,10 +40,6 @@ while True:
     if menu.game_active:
         pygame.time.delay(100) #100 milliseconds
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT: #if you hit the red X to close the porgram, it will stop the loop
-                run = False
-
         keys = pygame.key.get_pressed()
         #border detection
         if keys[pygame.K_LEFT] and x > velocity:
