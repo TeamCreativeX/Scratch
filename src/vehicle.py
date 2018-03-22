@@ -33,28 +33,28 @@ class Vehicle(pygame.sprite.Sprite):
         self.break_acceleration = 0.25 # Arbitrary value
         self.max_break = 5
 
-        def rotate_image(self, angle):
-            "Rotate the image around the center"
-            self.image = rot_image = pygame.transform.rotate(self.original_image, angle)
-            self.rect = rot_image.get_rect(center=self.rect.center)
+    def rotate_image(self, angle):
+        "Rotate the image around the center"
+        self.image = rot_image = pygame.transform.rotate(self.original_image, angle)
+        self.rect = rot_image.get_rect(center=self.rect.center)
 
-        def update(self, keystate):
-            """ Override the default routine
-            The update method is called on each cycle and should contain
-            the main logic about updating the status of the car object
-            /!\ This method is a work in progress, still lot of logic missing
-            """
-            print('TEST')
-            print(keystate)
-            if keystate[pygame.K_UP] and self.speed <= self.max_speed:
-                self.speed = self.speed + self.acceleration
-            elif keystate[pygame.K_DOWN]:
-                self.speed = self.speed - 0.3
-            elif self.speed > 0:
-                self.speed = self.speed - 0.15
-            if keystate[pygame.K_LEFT]: self.direction = self.direction + 2
-            if keystate[pygame.K_RIGHT]: self.direction = self.direction - 2
+    def update(self, keystate):
+        """ Override the default routine
+        The update method is called on each cycle and should contain
+        the main logic about updating the status of the car object
+        /!\ This method is a work in progress, still lot of logic missing
+        """
+        print('TEST')
+        print(keystate)
+        if keystate[pygame.K_UP] and self.speed <= self.max_speed:
+            self.speed = self.speed + self.acceleration
+        elif keystate[pygame.K_DOWN]:
+            self.speed = self.speed - 0.3
+        elif self.speed > 0:
+            self.speed = self.speed - 0.15
+        if keystate[pygame.K_LEFT]: self.direction = self.direction + 2
+        if keystate[pygame.K_RIGHT]: self.direction = self.direction - 2
 
-            self.rotate(self.direction)
-            self.rect = self.rect.move(math.sin(math.radians(self.direction)) * \
-                self.speed, math.cos(math.radians(self.direction)) * self.speed)
+        self.rotate_image(self.direction)
+        self.rect = self.rect.move(math.sin(math.radians(self.direction)) * \
+            self.speed, math.cos(math.radians(self.direction)) * self.speed)

@@ -47,9 +47,7 @@ def main():
 
         all.clear(game_window, game_background) # Clear the last drawn ssprite
         print(all)
-        print('Start update')
         all.update(keystate) # Trigger update() hook on every sprite
-        print('Stop update')
 
         # DRAW SPRITE
         dirty = all.draw(game_window)
