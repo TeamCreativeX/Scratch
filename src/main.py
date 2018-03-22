@@ -46,7 +46,6 @@ def main():
         keystate = pygame.key.get_pressed() # Dict of key status
 
         all.clear(game_window, game_background) # Clear the last drawn ssprite
-        print(all)
         all.update(keystate) # Trigger update() hook on every sprite
 
         # DRAW SPRITE

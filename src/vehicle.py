@@ -44,8 +44,6 @@ class Vehicle(pygame.sprite.Sprite):
         the main logic about updating the status of the car object
         /!\ This method is a work in progress, still lot of logic missing
         """
-        print('TEST')
-        print(keystate)
         if keystate[pygame.K_UP] and self.speed <= self.max_speed:
             self.speed = self.speed + self.acceleration
         elif keystate[pygame.K_DOWN]:
