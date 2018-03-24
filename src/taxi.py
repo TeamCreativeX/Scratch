@@ -46,7 +46,7 @@ while run:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                game.pause_game = True
+                game.pauseGame = True
                 game.pause()
 
 
