@@ -21,17 +21,28 @@ class Vehicle(pygame.sprite.Sprite):
 
         self.crashed = False # Temporary loose condition
 
-        self.direction = 0 # Direction of the car in degrees, counterclockwise
 
-        # Speed related value are in pixel
+        # Speed related value in pixel
         self.speed = 0 # Initial speed is 0, car is stopped.
-        self.acceleration = 0.25 # Arbitrary value
-        self.max_speed = 20 # Arbitrary value
+        self.acceleration = 0.40 # Arbitrary value
+        self.max_speed = 10 # Arbitrary value
 
-        # Break speed relative value are in degrees
-        self.break_speed = 0 # Initial break speed is 0
-        self.break_acceleration = 0.25 # Arbitrary value
-        self.max_break = 5
+        # Backward speed related value in pixel
+        self.backward_acceleration = 0.30
+        self.backward_max_speed = 4
+
+        # Break related value in pixel
+        self.deceleration = 0.35 # Arbitrary value
+        self.natural_deceleration = 0.15
+
+        # Direction of the car in degrees, counterclockwise
+        self.direction = 0 
+
+        # Turning related value in degrees
+        self.turn_speed = 0
+        self.turn_acceleration = 0.2
+        self.max_turn = 10
+        self.min_turn = -10
 
     def rotate_image(self, angle):
         "Rotate the image around the center"
@@ -44,15 +55,55 @@ class Vehicle(pygame.sprite.Sprite):
         the main logic about updating the status of the car object
         /!\ This method is a work in progress, still lot of logic missing
         """
+
+        # This logic is still elementary and should be splitted in different methods
+
+        # Acceleration
         if keystate[pygame.K_UP] and self.speed <= self.max_speed:
             self.speed = self.speed + self.acceleration
-        elif keystate[pygame.K_DOWN]:
-            self.speed = self.speed - 0.3
-        elif self.speed > 0:
-            self.speed = self.speed - 0.15
-        if keystate[pygame.K_LEFT]: self.direction = self.direction + 2
-        if keystate[pygame.K_RIGHT]: self.direction = self.direction - 2
+        
+        # Backward acceleration
+        if keystate[pygame.K_DOWN] and self.speed <= 0 and self.speed * -1 < self.backward_max_speed:
+            self.speed = self.speed - self.backward_acceleration
 
+        # Deceleration
+        if keystate[pygame.K_DOWN] and self.speed > 0:
+            self.speed = self.speed - self.deceleration
+
+        # Natural break
+        if not keystate[pygame.K_DOWN] and not keystate[pygame.K_UP]:
+            if self.speed > 0:
+                self.speed = self.speed - self.natural_deceleration
+            elif self.speed < 0:
+                self.speed = self.speed + self.natural_deceleration
+
+        # Turning left and right, should work with one method
+        # Turn left
+        if keystate[pygame.K_LEFT]:
+            # Reset turn speed if turning in other direction
+            if self.turn_speed < 0:
+                self.turn_speed = 0
+            if self.turn_speed <= self.max_turn:
+                self.turn_speed = self.turn_speed + self.turn_acceleration
+                self.direction = self.direction + self.turn_speed
+
+        # Turn right
+        if keystate[pygame.K_RIGHT]:
+            if self.turn_speed > 0:
+                self.turn_speed = 0
+            if self.turn_speed <= self.min_turn:
+                self.turn_speed = self.min_turn
+                self.turn_speed = self.turn_speed - self.turn_acceleration
+                self.direction = self.direction + self.turn_speed
+        
+        # Reset turn speed
+        if not keystate[pygame.K_RIGHT]:
+            if not keystate[pygame.K_LEFT]:
+                self.turn_speed = 0
+
+        # Update image direction
         self.rotate_image(self.direction)
+
+        # Update care position, read about trigonotry.
         self.rect = self.rect.move(math.sin(math.radians(self.direction)) * \
             self.speed, math.cos(math.radians(self.direction)) * self.speed)
