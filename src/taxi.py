@@ -1,4 +1,6 @@
 import pygame
+import sys
+import Core #importing core file which implements intro screen
 
 from menu import Menu
 from game_functions import check_events
@@ -22,7 +24,7 @@ title = "Scratch"
 pygame.init() #initializes pygame
 game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption(title)
-
+pause = False
 x = 50 #x starting chord for player
 y = 50 #y starting chord for player
 width = 40 # we'll use this for our player for now
@@ -30,6 +32,7 @@ height = 40 # ^
 velocity = 5 #velocity
 z = 450 #x chord for target
 q = 450 #y chord for target
+
 
 # Create Menu
 menu = Menu(game_window)
@@ -58,6 +61,7 @@ while True:
         target #drawing our target proto, the place we want to bring our player to
         if player == target: #if they are the same position (...) will happen
             game_window.fill((YELLOW)) #placeholder, can add some relevant function later, for now the screen will turn yellow
+
     pygame.display.update()
 
 pygame.quit()
