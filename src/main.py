@@ -4,6 +4,9 @@ sys.path.insert(0, './utility/')
 
 import os
 import pygame
+import core
+from menu import Menu
+from game_functions import check_events
 from vehicle import Vehicle
 
 # WINDOW CONSTANT
@@ -35,23 +38,30 @@ def main():
     # INITIALIZE DEFAULT GROUPS TO EACH SPRITE CLASS
     Vehicle.containers = all
 
+    # Create Menu
+    menu = Menu(game_window)
+
     car = Vehicle() # Create our player car object
+    
+    while True:
+        check_events(menu)
+        if menu.game_active:
+            # Dirty fix to clear menu it should be cleared when game start not at every loop
+            game_window.fill((0, 0, 0)) # 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or \
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                        return
 
-    while car.crashed == False:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT or \
-                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                    return
+            keystate = pygame.key.get_pressed() # Dict of key status
 
-        keystate = pygame.key.get_pressed() # Dict of key status
+            all.clear(game_window, game_background) # Clear the last drawn ssprite
+            all.update(keystate) # Trigger update() hook on every sprite
 
-        all.clear(game_window, game_background) # Clear the last drawn ssprite
-        all.update(keystate) # Trigger update() hook on every sprite
+            # DRAW SPRITE
+            dirty = all.draw(game_window)
 
-        # DRAW SPRITE
-        dirty = all.draw(game_window)
-        pygame.display.update(dirty)
-
+        pygame.display.update()
         clock.tick(30) # Cap FPS to 30 until delta time implementation
 
     pygame.quit() 

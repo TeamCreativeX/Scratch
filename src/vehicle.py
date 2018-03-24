@@ -85,22 +85,20 @@ class Vehicle(pygame.sprite.Sprite):
                 self.turn_speed = 0
             if self.turn_speed <= self.max_turn:
                 self.turn_speed = self.turn_speed + self.turn_acceleration
-                self.direction = self.direction + self.turn_speed
 
         # Turn right
         if keystate[pygame.K_RIGHT]:
             if self.turn_speed > 0:
                 self.turn_speed = 0
-            if self.turn_speed <= self.min_turn:
-                self.turn_speed = self.min_turn
+            if self.turn_speed >= self.min_turn:
                 self.turn_speed = self.turn_speed - self.turn_acceleration
-                self.direction = self.direction + self.turn_speed
         
         # Reset turn speed
-        if not keystate[pygame.K_RIGHT]:
-            if not keystate[pygame.K_LEFT]:
+        if not keystate[pygame.K_RIGHT] and not keystate[pygame.K_LEFT]:
                 self.turn_speed = 0
 
+        # Update direction
+        self.direction = self.direction + self.turn_speed
         # Update image direction
         self.rotate_image(self.direction)
 
