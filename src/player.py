@@ -1,4 +1,3 @@
-
 import pygame
 
 #Develop on this class to make much more better movements for the player
