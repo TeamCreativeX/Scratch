@@ -1,4 +1,6 @@
 import pygame
+import sys
+import Core #importing core file which implements intro screen
 
 # WINDOW SIZE
 WINDOW_WIDTH = 800
@@ -19,7 +21,7 @@ title = "Scratch"
 pygame.init() #initializes pygame
 game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption(title)
-
+pause = False
 x = 50 #x starting chord for player
 y = 50 #y starting chord for player
 width = 40 # we'll use this for our player for now
@@ -30,13 +32,24 @@ q = 450 #y chord for target
 
 #main loop
 run = True
+game = Core.Game(game_window,run)
 while run:
     pygame.time.delay(100) #100 milliseconds
-    
+    #Core.intro(game_window) #shows the intro
+    game.intro()
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #if you hit the red X to close the porgram, it will stop the loop
             run = False
-    
+            sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                game.pause_game = True
+                game.pause()
+
+
     keys = pygame.key.get_pressed()
     #border detection
     if keys[pygame.K_LEFT] and x > velocity:
@@ -57,4 +70,4 @@ while run:
         game_window.fill((YELLOW)) #placeholder, can add some relevant function later, for now the screen will turn yellow
     pygame.display.update()
 
-pygame.quit() 
+pygame.quit()
