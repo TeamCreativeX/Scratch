@@ -42,12 +42,12 @@ def main():
     menu = Menu(game_window)
 
     car = Vehicle() # Create our player car object
-    
+
     while True:
         check_events(menu)
         if menu.game_active:
             # Dirty fix to clear menu it should be cleared when game start not at every loop
-            game_window.fill((0, 0, 0)) # 
+            game_window.fill((0, 0, 0)) #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or \
                     (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -64,7 +64,7 @@ def main():
         pygame.display.update()
         clock.tick(30) # Cap FPS to 30 until delta time implementation
 
-    pygame.quit() 
+    pygame.quit()
 
 # START THE GAME
 if __name__ == '__main__':

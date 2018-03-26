@@ -16,7 +16,7 @@ class Vehicle(pygame.sprite.Sprite):
         # will alter the quality of the image otherwise.
         self.original_image = load_image('vehicle_taxi.png')
         self.image = self.original_image
-
+        self.test = False
         self.rect = self.image.get_rect()
 
         self.crashed = False # Temporary loose condition
@@ -36,13 +36,16 @@ class Vehicle(pygame.sprite.Sprite):
         self.natural_deceleration = 0.15
 
         # Direction of the car in degrees, counterclockwise
-        self.direction = 0 
+        self.direction = 0
 
         # Turning related value in degrees
         self.turn_speed = 0
-        self.turn_acceleration = 0.2
-        self.max_turn = 10
-        self.min_turn = -10
+        self.turn_acceleration = 0.1
+        self.max_turn = 6
+        self.min_turn = -6
+
+        #locgic boolean
+        self.is_moving = False
 
     def rotate_image(self, angle):
         "Rotate the image around the center"
@@ -58,10 +61,33 @@ class Vehicle(pygame.sprite.Sprite):
 
         # This logic is still elementary and should be splitted in different methods
 
+        #logic if car is moving
+        if self.speed > 0 or self.speed < 0:
+            self.is_moving = True
+        else:
+            self.is_moving = False
+
+        #chaning the turn speed when speed is slow [need more improvement]
+        if self.speed < 5 and self.speed > -4:
+            if self.turn_speed < 0:
+                self.turn_speed = -2
+            else:
+                self.turn_speed = 2
+        elif self.speed < 3 and self.speed > -2:
+            if self.turn_speed < 0:
+                self.turn_speed = -0.5
+            else:
+                self.turn_speed = 0.5
+
+        #resetting  the truning speed when stationary
+        if not self.is_moving:
+            self.turn_speed = 0
+
+
         # Acceleration
         if keystate[pygame.K_UP] and self.speed <= self.max_speed:
             self.speed = self.speed + self.acceleration
-        
+
         # Backward acceleration
         if keystate[pygame.K_DOWN] and self.speed <= 0 and self.speed * -1 < self.backward_max_speed:
             self.speed = self.speed - self.backward_acceleration
@@ -72,33 +98,39 @@ class Vehicle(pygame.sprite.Sprite):
 
         # Natural break
         if not keystate[pygame.K_DOWN] and not keystate[pygame.K_UP]:
-            if self.speed > 0:
+            if self.speed >= 0.15:
                 self.speed = self.speed - self.natural_deceleration
-            elif self.speed < 0:
+            elif self.speed <= -0.15:
                 self.speed = self.speed + self.natural_deceleration
+            else:
+                self.speed = 0
 
         # Turning left and right, should work with one method
         # Turn left
-        if keystate[pygame.K_LEFT]:
+        if keystate[pygame.K_LEFT] and self.is_moving:
             # Reset turn speed if turning in other direction
             if self.turn_speed < 0:
                 self.turn_speed = 0
             if self.turn_speed <= self.max_turn:
                 self.turn_speed = self.turn_speed + self.turn_acceleration
 
+
         # Turn right
-        if keystate[pygame.K_RIGHT]:
+        if keystate[pygame.K_RIGHT] and self.is_moving:
             if self.turn_speed > 0:
                 self.turn_speed = 0
             if self.turn_speed >= self.min_turn:
                 self.turn_speed = self.turn_speed - self.turn_acceleration
-        
+
+
+
         # Reset turn speed
         if not keystate[pygame.K_RIGHT] and not keystate[pygame.K_LEFT]:
                 self.turn_speed = 0
 
         # Update direction
-        self.direction = self.direction + self.turn_speed
+        if self.is_moving:
+            self.direction = self.direction + self.turn_speed
         # Update image direction
         self.rotate_image(self.direction)
 
