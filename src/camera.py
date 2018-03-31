@@ -1,3 +1,4 @@
+#not completed
 import pygame
 class Camera:
     def __init__(self,width, height):

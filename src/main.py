@@ -1,6 +1,6 @@
 # Extend sys path to utility folder, not sure about good practice, need advice on that
 import sys
-sys.path.insert(0, './utility/')
+#sys.path.insert(0, './utility/') 
 
 import os
 import pygame
