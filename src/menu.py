@@ -1,7 +1,7 @@
-import pygame
+import pygame, sys
 
 from button import Button
-
+from constant import *
 class Menu:
     '''
     Menu class to add specified number of buttons to the game's home screen
@@ -11,8 +11,8 @@ class Menu:
         ''' Initialize menu atttributes '''
         self.game_active = False
         self.screen = screen
-        self.num_buttons = 4
-        self.button_messages = ['Play', 'Temp', 'Temp', 'Temp']
+        self.num_buttons = 2
+        self.button_messages = ['Play', 'Quit']
         self.buttons = []
 
         self.prep_buttons(self.screen)
@@ -38,3 +38,7 @@ class Menu:
 
             if button_clicked and button.message == 'Play':
                 self.game_active = True
+
+            if button_clicked and button.message == 'Quit':
+                RUNNING = False
+                sys.exit()

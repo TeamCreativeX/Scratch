@@ -1,6 +1,7 @@
 import math
 import pygame
 from file_manipulation import load_image
+from constant import *
 
 class Vehicle(pygame.sprite.Sprite):
     """ Vehicle class
@@ -14,7 +15,8 @@ class Vehicle(pygame.sprite.Sprite):
         # INITIALIZE IMAGE
         # Save the original image as reference as successive rotations
         # will alter the quality of the image otherwise.
-        self.original_image = load_image('vehicle_taxi.png')
+        self.original_image = load_image('player.png')
+        self.original_image.set_colorkey(self.original_image.get_at((0,0)))
         self.image = self.original_image
         self.test = False
         self.rect = self.image.get_rect()
@@ -52,7 +54,7 @@ class Vehicle(pygame.sprite.Sprite):
         self.image = rot_image = pygame.transform.rotate(self.original_image, angle)
         self.rect = rot_image.get_rect(center=self.rect.center)
 
-    def update(self, keystate):
+    def update(self,keystate):
         """ Override the default routine
         The update method is called on each cycle and should contain
         the main logic about updating the status of the car object

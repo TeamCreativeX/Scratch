@@ -5,29 +5,19 @@ sys.path.insert(0, './utility/')
 import os
 import pygame
 import core
+import camera
 from menu import Menu
 from game_functions import check_events
 from vehicle import Vehicle
-
-# WINDOW CONSTANT
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
-WINDOW_NAME = "Scratch"
-
-# COLORS
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
+from constant import *
+from file_manipulation import load_image
 
 def main():
-    # INITIALIZE PYGAME
+    # INITIALIZE PYGAME pygame.SRCALPHA
     pygame.init()
-    pygame.display.set_caption(WINDOW_NAME)
-    game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    game_background = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.display.set_caption(TITLE)
+    game_window = pygame.display.set_mode(SIZE)
+    #game_background = pygame.Surface((2000,1000),pygame.SRCALPHA)
 
     # INITIALIZE CLOCK
     clock = pygame.time.Clock() # Initialize clock for later use
@@ -41,13 +31,17 @@ def main():
     # Create Menu
     menu = Menu(game_window)
 
+    #test map
+    map = load_image("test_map.png")
+
     car = Vehicle() # Create our player car object
 
-    while True:
+    while RUNNING:
         check_events(menu)
         if menu.game_active:
             # Dirty fix to clear menu it should be cleared when game start not at every loop
-            game_window.fill((0, 0, 0)) #
+            game_window.fill(WHITE) #
+            game_window.blit(map,(-400,0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or \
                     (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -55,9 +49,8 @@ def main():
 
             keystate = pygame.key.get_pressed() # Dict of key status
 
-            all.clear(game_window, game_background) # Clear the last drawn ssprite
+            #all.clear(game_window, game_background) # Clear the last drawn ssprite
             all.update(keystate) # Trigger update() hook on every sprite
-
             # DRAW SPRITE
             dirty = all.draw(game_window)
 
