@@ -1,15 +1,15 @@
-#import os
+import os
 
 import pygame
-from pathlib import Path
+
 
 # INITIALIZE PROJECT PATH
-#MAIN_DIR = os.path.split(os.path.abspath(''))[0]
-ASSETS = Path("assets/")
+MAIN_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 def load_image(file):
-    "loads an image, prepares it for play"
-    file = str(ASSETS / file)
+    #"loads an image, prepares it for play"
+    file = os.path.join(MAIN_DIR,'assets',file)
     try:
         surface = pygame.image.load(file)
     except pygame.error:
