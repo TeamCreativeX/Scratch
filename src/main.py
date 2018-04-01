@@ -10,7 +10,9 @@ from menu import Menu
 from game_functions import check_events
 from vehicle import Vehicle
 from constant import *
-from file_manipulation import load_image
+from file_manipulation import *
+from camera import Camera
+from sound import Sound
 
 def main():
     # INITIALIZE PYGAME pygame.SRCALPHA
@@ -31,15 +33,26 @@ def main():
     # Create Menu
     menu = Menu(game_window)
 
+    #load music
+    music = Sound()
+    music.playMusic()
+    loadMusic = True
     #test map
     map = load_image("test_map.png")
-
+    camera = Camera(map.get_rect().x,map.get_rect().y)
     car = Vehicle() # Create our player car object
+
+
+
 
     while RUNNING:
         check_events(menu)
         if menu.game_active:
             # Dirty fix to clear menu it should be cleared when game start not at every loop
+            if loadMusic:
+                music.loadMusic(load_sound("game.ogg"))
+                music.playMusic()
+                loadMusic = False
             game_window.fill(WHITE) #
             game_window.blit(map,(-400,0))
             for event in pygame.event.get():

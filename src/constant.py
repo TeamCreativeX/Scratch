@@ -1,6 +1,6 @@
 #Window variable
-WIDTH = 1064
-HEIGHT = 764
+WIDTH = 700
+HEIGHT = 500
 TITLE = "Scratch"
 SIZE = (WIDTH,HEIGHT)
 
